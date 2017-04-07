@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/StockWatcher/StockWatcher.iml" filepath="$PROJECT_DIR$/StockWatcher/StockWatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/constellation.iml" filepath="$PROJECT_DIR$/constellation.iml" />
+    </modules>
+  </component>
+</project>
