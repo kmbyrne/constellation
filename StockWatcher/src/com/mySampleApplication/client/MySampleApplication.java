@@ -2,6 +2,7 @@ package com.mySampleApplication.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -9,6 +10,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -21,6 +24,7 @@ public class MySampleApplication implements EntryPoint
 	private TextBox newSymbolTextBox = new TextBox();
 	private Button addStockButton = new Button("Add");
 	private Label lastUpdatedLabel = new Label();
+	private List<String> stocks = new ArrayList<>();
 
 	/**
 	 * Entry point method.
@@ -43,7 +47,7 @@ public class MySampleApplication implements EntryPoint
 		mainPanel.add(lastUpdatedLabel);
 
 		// Associate the Main panel with the HTML host page.
-		RootPanel.get("slot1").add(mainPanel);
+		RootPanel.get("stockList").add(mainPanel);
 		// Move cursor focus to the input box.
 		newSymbolTextBox.setFocus(true);
 
@@ -60,6 +64,30 @@ public class MySampleApplication implements EntryPoint
 
 	private void addStock()
 	{
+		final String symbol = newSymbolTextBox.getText().toUpperCase().trim();
+		newSymbolTextBox.setFocus(true);
 
+		if (!symbol.matches("^[0-9A-Z\\.]{1,10}$"))
+		{
+			Window.alert("'" + symbol + "' is not a valid symbol.");
+			newSymbolTextBox.selectAll();
+			return;
+		}
+
+		if(stocks.contains(symbol)) return;
+
+		int row = stocksFlexTable.getRowCount();
+		stocks.add(symbol);
+		stocksFlexTable.setText(row, 0, symbol);
+
+		Button removeStockButton = new Button("x");
+		removeStockButton.addClickHandler(event -> {
+			int removedIndex = stocks.indexOf(symbol);
+			stocks.remove(removedIndex);
+			stocksFlexTable.removeRow(removedIndex + 1);
+		});
+		stocksFlexTable.setWidget(row, 3, removeStockButton);
+
+		newSymbolTextBox.setText("");
 	}
 }
